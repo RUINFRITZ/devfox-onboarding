@@ -1,3 +1,16 @@
 学習スケジュール
 
-260324 : AWS Account Setting, Prepare Presentation
+260324 : AWS Account Setting, Prepare チーム プロジェクト Presentation(3月26日 予定)
+  - EC2 Instance 生成「IP : 3.39.233.74:8888 / ON 03.24.」 // 日本語設定で進行、amazon-linux-2023 6.1(新しいものを勉強するためです。)
+  - セキュリティ : インバウンドのルールを編集画面で直接確認。
+    1. カスタム TCP(8888) 追加
+    2. 加えて HTTP(80), HTTPS(443), MySQL/Aurora
+  - PuTTY SSH 接続
+    1. PEM to PPK : PuTTYgen 活用実習
+    2. Connection/SSH/Auth/Credentials -> Session Connection type SSH
+    3. Global Common ID : EC2-user
+    4. sudo dnf update -y // 最新のセキュリティパッチとカーネルアップデートの反映を目的としています
+    5. sudo dnf install java-17-amazon-corretto -y
+    6. sudo dnf install mysql-server -> エラ- : Unable to find a match: mysql-server
+      1) MariaDBと互換性はありますが、MySQLのインストール実習
+      2) https://desarrollador.tistory.com/28 // このサイトを活用して解決
