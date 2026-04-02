@@ -1,5 +1,11 @@
 学習スケジュール
 
+260403 : 260330から Java, JSP/JSTL, SQL, 全体的な復習をしました。Spring MVCの概念勉強を始めました。
+  - JSPを利用してCBQ「情報処理産業技師」と掲示板を作りました。
+  - JSTLで会員登録から初めてJOIN式活用と画面に情報をどのように表示するのかをかんがえました。
+  - Oracleの「INSERT, DELETE, UPDATE, SELECT」構文とSELECT式のJOINを復習してJSPプログラムを作成しました。
+  - NEWLECTURE : DI(Dependency Injection)とIoC(Inversion of Control)の概念学習をしました。 
+
 260329 : 学習計画書を作成つるために、様々な講義を探して見ました。
   - Spring BootとJPAの追加勉強のためにこの講義を選びました。
     - "inflearn Spring Boot & JPA" : https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard?cid=324119
