@@ -5,8 +5,8 @@
   - Build Path -> Add Library -> Juit4
   - Spring 5.3.31は、Java 11を公式にサポートするレガシーMVCの最も完成された最後のバージョンです。
   - POM : mybatis(3.5.11), mybatis-spring(2.1.0), mysql-connector-j(8.2.0), spring-jdbc, spring-test${org.springframework-version}, junit(4.13.2)
- 
-└
+│
+└所感 : SpringFramework環境においてMySQL8とのJDBC接続を検証するJUnitテスト環境の構築中、複数の依存性およびビルド環境のエラーが発生し、これを解決した。
 
 ┌260403 : 260330から Java, JSP/JSTL, SQL, 全体的な復習をしました。Spring MVCの概念勉強を始めました。
   - JSPを利用してCBQ「情報処理産業技師」と掲示板を作りました。
