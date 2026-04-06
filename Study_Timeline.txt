@@ -2,7 +2,10 @@
 
 ┌260406 : 毎日「www.e-typing.ne.jp」でタイピング練習を始めました。
   - 今、最高レベル:B+ / スコア:192pt / WPM:222.17 / 正確率:95.3% / ミス入力数:13
-  
+  - Build Path -> Add Library -> Juit4
+  - Spring 5.3.31は、Java 11を公式にサポートするレガシーMVCの最も完成された最後のバージョンです。
+  - POM : mybatis(3.5.11), mybatis-spring(2.1.0), mysql-connector-j(8.2.0), spring-jdbc, spring-test${org.springframework-version}, junit(4.13.2)
+ 
 └
 
 ┌260403 : 260330から Java, JSP/JSTL, SQL, 全体的な復習をしました。Spring MVCの概念勉強を始めました。
