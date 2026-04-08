@@ -34,33 +34,38 @@
 <script>
 	function check() {
 		if(join.email.value.trim() == "") {
-			alert("メールを入力してください。");
+			alert(" * メールを入力してください。");
 			join.email.focus();
 			return false;
 		}
 		if(join.password.value.trim() == "") {
-			alert("パスワードを入力してください。");
+			alert(" * パスワードを入力してください。");
 			join.password.focus();
 			return false;
 		}
 		if(join.password2.value.trim() == "") {
-			alert("パスワード確認を入力してください。");
+			alert(" * パスワード確認を入力してください。");
 			join.password2.focus();
 			return false;
 		}
-		if(join.password2.value == join.password.value) {
-			alert("パスワード入力が一致しません。");
+		if(join.password2.value != join.password.value) {
+			alert(" * パスワード入力が一致しません。");
 			join.password2.focus();
 			return false;
 		}
 		if(join.nickname.value.trim() == "") {
-			alert("ニックネームを入力してください。");
+			alert(" * ニックネームを入力してください。");
 			join.nickname.focus();
 			return false;
 		}
 		
-		alert("ご登録を歓迎いたします。");
-		return true;
+		if(is_email_exist == 'n') {
+			alert(" * メールチェッくをおねがいします。");
+		} else {
+			alert(" - ご登録を歓迎いたします。");
+			return true;
+		}
+		
 	}
 </script>
 </head>
@@ -96,11 +101,15 @@
 	
 	<section>
 		 <h2 style = "margin-bottom: 22px;">Member Join</h2>
-		 <form name="login" method="post" action="/login.do" onsubmit="return check()">
+		 <form name="join" method="post" action="/join.do" onsubmit="return check()">
 		 	<table>
 				<tr>
 					<th>E-mail</th>
-					<td><input type="email" name="email"></td>
+					<td>
+						<input type="hidden" name="is_email_exist" id="is_email_exist" value="n">
+						<input type="email" name="email" id="email"><input type="button" id="emcheck" value="メールチェッく"><br>
+						<p id = "emcheckmsg"></p>
+					</td>
 				</tr>		 	
 				<tr>
 					<th>Password</th>
@@ -112,7 +121,7 @@
 				</tr>
 				<tr>
 					<th>Nickname</th>
-					<td><input type="text" name="Nickname"></td>
+					<td><input type="text" name="nickname"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align : center;">
@@ -127,5 +136,39 @@
 		<p>DEVFOX onboarding 課題、掲示板<br>朴潤正 / PARK YUNJEONG</p>
 	</footer>
 
+	<script>
+		$(function() {
+			$('#emcheck').on('click').function() {
+				if($('#email').val() == '') {
+					alert(" * メールを入力してください。");
+					$('#email').focus();
+					return false;
+				}
+				
+				const xhr = new XMLHttpRequest();
+				const email = $('#email').val();
+				xhr.open('GET', '/emailcheck?email='+email, true);
+				xhr.send();
+				
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+						const result = xhr.responseText;
+						
+						if(result.trim() == "1"){
+							$('#emcheckmsg').html("<b style='color : blue'>使用できるメールです。</b>");
+							$('#is_email_exist').val('y');
+						} else {
+							$('#emcheckmsg').html("<b style='color : red'>使用できないメールです。</b>");
+						}
+					}
+				}
+			});
+			$("#userid").on('keyup', function() {
+				$('#is_email_exist').val("n");
+				$('emcheckmsg').html("");
+			})
+		});
+		
+	</script>
 </body>
 </html>

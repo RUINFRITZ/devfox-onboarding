@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mvc.mappers.board">
+<mapper namespace="com.devts.board.mapper.BoardMapper">
 
-
+	
 
 </mapper>

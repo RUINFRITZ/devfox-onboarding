@@ -1,5 +1,8 @@
 学習スケジュール
 
+260408 : Spring Securiy / CRUDの中でINSERTを完成
+  - Prouble Shooting : @Autowiredで暗号化を使うと宣言しましたが、pom.xmlにだけ追加し、root-context.xmlにBeanを追加しなかったのでエラーが発生しました。
+
 ┌260406 : 毎日「www.e-typing.ne.jp」でタイピング練習を始めました。
   - 今、最高レベル:B+ / スコア:192pt / WPM:222.17 / 正確率:95.3% / ミス入力数:13
   - Build Path -> Add Library -> Juit4

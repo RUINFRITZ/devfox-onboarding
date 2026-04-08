@@ -1,4 +1,4 @@
-package com.devts.board;
+package com.devts.board.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
