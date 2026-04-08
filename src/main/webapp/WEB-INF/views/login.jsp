@@ -27,7 +27,26 @@
 	
 	footer { padding : 22px 0; text-align : center; background-color : RGB(255, 109, 45);}
 	
+	table, th, td { border : 1px solid #bbb }
+	table { margin : 0 auto; width : 400px; }
 </style>
+
+<script>
+	function check() {
+		if(login.email.value.trim() == "") {
+			alert("メールを入力してください。");
+			login.email.focus();
+			return false;
+		}
+		if(login.password.value.trim() == "") {
+			alert("パスワードを入力してください。");
+			login.password.focus();
+			return false;
+		}
+		
+		return true;
+	}
+</script>
 </head>
 
 <body>
@@ -60,7 +79,24 @@
 	</nav>
 	
 	<section>
-		 - kokoni post list	
+		 <h2 style = "margin-bottom: 22px;">Member login</h2>
+		 <form name="login" method="post" action="/login.do" onsubmit="return check()">
+		 	<table>
+				<tr>
+					<th>E-mail</th>
+					<td><input type="email" name="email"></td>
+				</tr>		 	
+				<tr>
+					<th>Password</th>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align : center;">
+						<input type = "submit" value = "ログイン">
+					</td>
+				</tr>		 	
+		 	</table>
+		 </form>
 	</section>
 	
 	<footer>

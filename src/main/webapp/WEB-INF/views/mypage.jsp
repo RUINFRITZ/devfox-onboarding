@@ -42,13 +42,12 @@
 	if(userid != null) { // ロぐイン状態判別
 	%>
 		<p><%= userid %></p>
-		<a href="/logout.do">Logout</a>
 		<a href="/mypage">Mypage</a>
+		<a href="/logout.do">Logout</a>
 	<%
 	} else {
 	%>	
 		<a href="/login">Login</a>
-		<a href="/join">Join</a>
 	<%
 	}
 	%>
@@ -60,7 +59,7 @@
 	</nav>
 	
 	<section>
-		 - kokoni post list	
+		 - お気に入り(Bookmarks)、会員退会
 	</section>
 	
 	<footer>
