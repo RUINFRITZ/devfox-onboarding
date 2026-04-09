@@ -94,7 +94,7 @@ public class MemberController {
 			new SecurityContextLogoutHandler().logout(req, res, auth);
 		}
 		
-		return "home";
+		return "redirect:/";
 	}
 	
 }

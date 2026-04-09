@@ -6,7 +6,10 @@
 
 	<security:http>
 		<security:intercept-url pattern="/" access="permitAll" />
-		<security:intercept-url pattern="/mypage" access="hasRole('USER')" />
+		<security:intercept-url pattern="/mypage" access="hasAuthority('USER')" />
+		<security:intercept-url pattern="/board/write" access="hasAuthority('USER')" />
+		<security:intercept-url pattern="/board/delete" access="hasAuthority('USER')" />
+		<security:intercept-url pattern="/board/update" access="hasAuthority('USER')" />
 		
 		<security:form-login login-page="/login"
 							 username-parameter="email"

@@ -2,8 +2,36 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
 <mapper namespace="com.devts.board.mapper.BoardMapper">
 
+	<select id="postList" parameterType="BoardDto" resultType="BoardDto">
+		SELECT post_id, p.user_id as user_id, title, content, views, likes, p.created_at as created_at, u.email as email
+		FROM posts as p LEFT JOIN users as u 
+		ON p.user_id = u.user_id
+		WHERE is_deleted IS NULL
+		ORDER BY created_at DESC
+	</select>
 	
+	<select id="postView" parameterType="String" resultType="BoardDto">
+		SELECT * FROM posts WHERE post_id = #{post_id} AND is_deleted IS NULL
+	</select>
+	
+	<insert id="postWrite" parameterType="BoardDto">
+		INSERT INTO posts (user_id, title, content)
+		VALUES (#{user_id}, #{title}, #{content})
+	</insert>
+	
+	<update id="postDelete" parameterType="String">
+		UPDATE posts SET is_deleted=now() WHERE post_id = #{post_id}
+	</update>
+	
+	<update id="postUpdate" parameterType="BoardDto">
+		UPDATE posts
+		SET title = #{title},
+			content = #{content},
+			updated_at = now()
+		WHERE post_id = #{post_id}
+	</update>
 
 </mapper>
