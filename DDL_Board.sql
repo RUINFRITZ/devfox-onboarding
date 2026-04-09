@@ -6,7 +6,7 @@ CREATE TABLE users (
     point int,
     role VARCHAR(16) DEFAULT 'USER',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    is_active DATETIME DEFAULT CURRENT_TIMESTAMP,
+    is_active TINYINT DEFAULT 1,
     CONSTRAINT users_pk PRIMARY KEY (user_id)
 );
 
