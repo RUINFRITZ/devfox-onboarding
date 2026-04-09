@@ -14,6 +14,10 @@ public class MemberDto {
     private Date is_active; // DATETIME DEFAULT CURRENT_TIMESTAMP,
     // CONSTRAINT users_pk PRIMARY KEY (user_id)
     
+    public MemberDto() {
+    	
+    }
+    
 	public int getUser_id() {
 		return user_id;
 	}

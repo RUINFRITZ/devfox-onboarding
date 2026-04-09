@@ -1,5 +1,9 @@
 学習スケジュール
 
+260409 : Spring Security login, Board
+  - ERROR : エラーログに何も表示されず、権限を得ることができません。
+    └ 解決 : カスタムロルを使用する場合、hasRoleでわなくてhasAuthority('USER')を使うべきです。
+
 260408 : Spring Securiy / CRUDの中でINSERTを完成
   - Prouble Shooting : @Autowiredで暗号化を使うと宣言しましたが、pom.xmlにだけ追加し、root-context.xmlにBeanを追加しなかったのでエラーが発生しました。
 

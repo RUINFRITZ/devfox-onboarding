@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <%@ page session="true" %>
 
 <html>
@@ -36,25 +38,23 @@
 	</header>
 	
 	<nav>
-	<%
-	String userid = (String) session.getAttribute("loginid");
-	
-	if(userid != null) { // ロぐイン状態判別
-	%>
-		<p><%= userid %></p>
-		<a href="/logout.do">Logout</a>
+	<sec:authorize access="isAuthenticated()">
+		<p><sec:authentication property="principal.username" /> 様</p>
+		<form class="logout_form" method="post" action="/logout.do">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input type="submit" id="logout" value="ログアウト">
+		</form>
 		<a href="/mypage">Mypage</a>
-	<%
-	} else {
-	%>	
+	</sec:authorize>
+	
+	<sec:authorize access="isAnonymous()">
 		<a href="/login">Login</a>
 		<a href="/join">Join</a>
-	<%
-	}
-	%>
+	</sec:authorize>
+	
 		<a href="/">Home</a>
 		<form class="search_form" method="post" action="/search.do">
-			<input type=text name=search>
+			<input type = text name = search>
 			<input type = "submit" value = "検索">
 		</form>
 	</nav>
