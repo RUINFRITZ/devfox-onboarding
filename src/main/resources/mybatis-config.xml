@@ -4,4 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+	<typeAliases>
+		<typeAlias alias="MemberDto" type="com.devts.board.domain.MemberDto" />
+	</typeAliases>
+	
 </configuration>

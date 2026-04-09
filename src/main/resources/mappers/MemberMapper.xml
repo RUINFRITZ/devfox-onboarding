@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.devts.board.mapper.MemberMapper">
+	
+	<insert id="memberInsert" parameterType="com.devts.board.domain.MemberDto">
+		INSERT INTO users (email, password, nickname, point)
+		VALUES (#{email}, #{password}, #{nickname}, 0)
+	</insert>
+
+	<select id="memberEmailCheck" parameterType="String">
+		SELECT email FROM users WHERE email = #{email}
+	</select>
+
+</mapper>
