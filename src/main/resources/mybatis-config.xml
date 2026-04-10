@@ -7,6 +7,7 @@
 	<typeAliases>
 		<typeAlias alias="MemberDto" type="com.devts.board.domain.MemberDto" />
 		<typeAlias alias="BoardDto" type="com.devts.board.domain.BoardDto" />
+		<typeAlias alias="CommentDto" type="com.devts.board.domain.CommentDto" />
 	</typeAliases>
 	
 </configuration>

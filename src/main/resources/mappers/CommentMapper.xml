@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.devts.board.mapper.CommentMapper">
+
+	<select id="commentList" parameterType="int" resultType="CommentDto">
+		SELECT c.comment_id, c.post_id, c.user_id, c.content, c.created_at, u.email as email
+		FROM comments as c LEFT JOIN users as u
+		ON c.user_id = u.user_id
+		WHERE is_deleted IS NULL AND c.post_id = #{post_id}
+		ORDER BY c.created_at DESC
+	</select>
+	
+	<insert id="commentInsert" parameterType="CommentDto">
+		INSERT INTO comments (post_id, user_id, content)
+		VALUES (#{post_id}, #{user_id}, #{content})
+	</insert>
+	
+	<update id="commentDelete" parameterType="int">
+		UPDATE comments SET is_deleted=now() WHERE comment_id = #{comment_id}
+	</update>
+	
+	<update id="commentUpdate" parameterType="CommentDto">
+		UPDATE comments
+		SET content = #{content}
+		WHERE comment_id = #{comment_id}
+	</update>
+
+	<select id="getCommentTotalCnt" parameterType="java.util.HashMap" resultType="int">
+		SELECT COUNT(*) FROM comments WHERE is_deleted IS NULL
+	</select>
+
+</mapper>
