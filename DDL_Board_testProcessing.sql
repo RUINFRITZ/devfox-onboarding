@@ -30,5 +30,17 @@ SELECT post_id, p.user_id as user_id, title, content, views, likes, p.created_at
 FROM posts as p LEFT JOIN users as u
 ON p.user_id = u.user_id
 WHERE is_deleted IS NULL
-ORDER BY created_at DESC
+ORDER BY created_at DESC;
 
+SELECT user_id FROM users WHERE email = 'foxfox@fox.com';
+SELECT count(*) FROM users WHERE email= 'foxfox@fox.com';
+SELECT post_id, p.user_id as user_id, title, content, views, likes,  p.created_at as created_at, u.email as email
+FROM posts as p LEFT JOIN users as u 
+ON p.user_id = u.user_id
+WHERE post_id = 2 AND is_deleted IS NULL;
+
+SELECT @@time_zone;
+
+
+        
+        

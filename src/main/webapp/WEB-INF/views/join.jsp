@@ -9,6 +9,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>コミュニティーシステム</title>
+	
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <style>
 	* { margin : 0; padding : 0; }
@@ -61,15 +63,16 @@
 			return false;
 		}
 		
-		if(is_email_exist == 'n') {
+		if(document.getElementById('is_email_exist').value === 'n') {
 			alert(" * メールチェッくをおねがいします。");
+			return false;
 		} else {
 			alert(" - ご登録を歓迎いたします。");
 			return true;
 		}
-		
 	}
 </script>
+
 </head>
 
 <body>
@@ -93,10 +96,6 @@
 	</sec:authorize>
 	
 		<a href="/">Home</a>
-		<form class="search_form" method="post" action="/search.do">
-			<input type = text name = search>
-			<input type = "submit" value = "検索">
-		</form>
 	</nav>
 	
 	<section>
@@ -107,7 +106,7 @@
 					<th>E-mail</th>
 					<td>
 						<input type="hidden" name="is_email_exist" id="is_email_exist" value="n">
-						<input type="email" name="username" id="email"><input type="button" id="emcheck" value="メールチェッく"><br>
+						<input type="email" name="email" id="email"><input type="button" id="emcheck" value="メールチェッく"><br>
 						<p id = "emcheckmsg"></p>
 					</td>
 				</tr>		 	
@@ -141,35 +140,38 @@
 
 	<script>
 		$(function() {
-			$('#emcheck').on('click').function() {
-				if($('#email').val() == '') {
+			$('#emcheck').on('click', function() {
+				const emailVal = $('#email').val().trim();
+				if(emailVal === '') {
 					alert(" * メールを入力してください。");
 					$('#email').focus();
 					return false;
 				}
 				
-				const xhr = new XMLHttpRequest();
-				const email = $('#email').val();
-				xhr.open('GET', '/emailcheck?email='+email, true);
-				xhr.send();
-				
-				xhr.onreadystatechange = function() {
-					if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-						const result = xhr.responseText;
-						
-						if(result.trim() == "1"){
-							$('#emcheckmsg').html("<b style='color : blue'>使用できるメールです。</b>");
+				$.ajax({
+					url: '/emailcheck',
+					type: 'GET',
+					data: { email: emailVal },
+					success: function(result) {
+						if(result.toString().trim() === "0") {
+							$('#emcheckmsg').html("<b style = 'color : blue'>使用可能なメールです。</b>");
 							$('#is_email_exist').val('y');
 						} else {
-							$('#emcheckmsg').html("<b style='color : red'>使用できないメールです。</b>");
+							$('#emcheckmsg').html("<b style = 'color : red'>使用されているメールです。</b>");
+							$('#is_email_exist').val('n');
 						}
+					},
+					error: function(xhr, status, error) {
+						console.error(" * Ajax ERROR : ", error);
+						alert(" * サーバーエラーです。");
 					}
-				}
+				})
 			});
-			$("#userid").on('keyup', function() {
+			
+			$("#email").on('keyup', function() {
 				$('#is_email_exist').val("n");
-				$('emcheckmsg').html("");
-			})
+				$('#emcheckmsg').html("");
+			});
 		});
 		
 	</script>

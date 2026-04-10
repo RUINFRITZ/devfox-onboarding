@@ -11,5 +11,8 @@ public interface MemberMapper {
 	public int memberInsert(MemberDto dto);
 	
 	// メンバーのメールの重複を確認します。
-	public int memberEmailCheck(String mail);
+	public int memberEmailCheck(String email);
+	
+	// メールを利用してuser_idを持ってきます。
+	public int memberUserIdGet(String email);
 }

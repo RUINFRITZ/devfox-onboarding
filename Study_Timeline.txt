@@ -1,5 +1,13 @@
 学習スケジュール
 
+260410 : Board, Paging, Search, 報告文書作成 / 【週報】【名前】3週目(260406~260410)
+  - Board : View, Write, Update, Delete, ViewsUP
+  - issue : 日本語が"UTF-8"にインコディングされなくてデータベースに保存される状況が発生しました。
+    └ 解決 : 「encodingFilter」を「springSecurityFilterChain」上に追加して解決しました。
+  - issue : JSPで時間をfmt:formatDateを利用して表示した時、データベースの保存されている時間と違く出力されるイシューが発生しました。
+    └ 解決 : データベースの「time_zone」の値が「システム」であるため、serverTimezone=UTCをAsia/Seoulに変えることで解決。
+  - [機能]comment : https://yeo-computerclass.tistory.com/336
+
 260409 : Spring Security login, Board
   - ERROR : エラーログに何も表示されず、権限を得ることができません。
     └ 解決 : カスタムロルを使用する場合、hasRoleでわなくてhasAuthority('USER')を使うべきです。

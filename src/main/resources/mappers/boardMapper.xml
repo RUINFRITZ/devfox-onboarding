@@ -13,8 +13,26 @@
 		ORDER BY created_at DESC
 	</select>
 	
-	<select id="postView" parameterType="String" resultType="BoardDto">
-		SELECT * FROM posts WHERE post_id = #{post_id} AND is_deleted IS NULL
+	<select id="getPostListWithPaging" parameterType="java.util.HashMap" resultType="BoardDto">
+		SELECT p.post_id, p.user_id, p.title, p.content, p.views, p.likes, p.created_at, u.email as email
+		FROM (
+			SELECT * FROM posts
+			WHERE
+				is_deleted IS NULL
+				<if test="searchType=='title'">AND title LIKE CONCAT('%', #{searchWord},'%')</if>
+				<if test="searchType=='content'">AND content LIKE CONCAT('%', #{searchWord},'%')</if>
+				<if test="searchType==''">AND 1 = 1</if>
+		) AS p LEFT JOIN users AS u
+		ON p.user_id = u.user_id
+		ORDER BY p.created_at DESC
+		LIMIT #{pageAmount} OFFSET #{startPostNum}
+	</select>
+	
+	<select id="postView" parameterType="int" resultType="BoardDto">
+		SELECT post_id, p.user_id as user_id, title, content, views, likes, updated_at, p.created_at as created_at, u.email as email
+		FROM posts as p LEFT JOIN users as u 
+		ON p.user_id = u.user_id
+		WHERE post_id = #{post_id} AND is_deleted IS NULL
 	</select>
 	
 	<insert id="postWrite" parameterType="BoardDto">
@@ -22,7 +40,7 @@
 		VALUES (#{user_id}, #{title}, #{content})
 	</insert>
 	
-	<update id="postDelete" parameterType="String">
+	<update id="postDelete" parameterType="int">
 		UPDATE posts SET is_deleted=now() WHERE post_id = #{post_id}
 	</update>
 	
@@ -33,5 +51,18 @@
 			updated_at = now()
 		WHERE post_id = #{post_id}
 	</update>
+
+	<select id="getPostTotalCnt" parameterType="java.util.HashMap" resultType="int">
+		SELECT COUNT(*) FROM posts
+		WHERE
+			is_deleted IS NULL
+			<if test="searchType == 'title'.toString()">AND title LIKE CONCAT('%',#{serachWord},'%')</if>
+			<if test="searchType == 'content'.toString()">AND content LIKE CONCAT('%',#{serachWord},'%')</if>
+			<if test="searchType == ''.toString()">AND 1 = 1</if>
+	</select>
+
+	<update id="updatePostViews" parameterType="int">
+		UPDATE posts SET views = views + 1 WHERE post_id = #{post_id}
+	</update>	
 
 </mapper>

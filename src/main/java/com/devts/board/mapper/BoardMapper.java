@@ -1,6 +1,7 @@
 package com.devts.board.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +12,17 @@ public interface BoardMapper {
 
 	public List<BoardDto> postList();
 	
-	public BoardDto postView(String post_id);
+	public List<BoardDto> getPostListWithPaging(Map<String, Object> paramMap);
+	
+	public BoardDto postView(int post_id);
 	
 	public int postWrite(BoardDto board);
 	
-	public int postDelete(String post_id);
+	public int postDelete(int post_id);
 	
 	public int postUpdate(BoardDto board);
+	
+	int getPostTotalCnt(Map<String, Object> paramMap);
+	
+	int updatePostViews(int post_id);
 }

@@ -10,8 +10,12 @@
 		VALUES (#{email}, #{password}, #{nickname}, 0)
 	</insert>
 
-	<select id="memberEmailCheck" parameterType="String">
-		SELECT email FROM users WHERE email = #{email}
+	<select id="memberEmailCheck" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM users WHERE email = #{email}
+	</select>
+	
+	<select id="memberUserIdGet" parameterType="String" resultType="int">
+		SELECT user_id FROM users WHERE email = #{email}
 	</select>
 
 </mapper>

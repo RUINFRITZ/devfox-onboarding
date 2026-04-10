@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <%@ page session="true" %>
@@ -33,23 +34,16 @@
 	
 	table { margin : 0 auto; width : 880px; }
 
-	
 </style>
 
-<script>
-	function check() {
-		if(write.title.value.trim() == "") {
-			alert("タイトルを入力してください。");
-			write.title.focus();
+<script>	
+	function isUpWriter() {
+		if(udt.writer.value == udt.user.value) {
+			return true;
+		} else {
+			alert("作成者しかできません。");
 			return false;
 		}
-		if(write.content.value.trim() == "") {
-			alert("コンテンツを入力してください。");
-			write.content.focus();
-			return false;
-		}
-		
-		return true;
 	}
 </script>
 
@@ -79,30 +73,43 @@
 	</nav>
 	
 	<section>
-		 <h2 style="margin-bottom : 22px;">記事作成</h2>
-		 <form name="write" method="post" action="/board/write.do" onsubmit="function check()">
+		<h2 style="margin-bottom : 22px;">記事修正</h2>
+		<form name="udt" method="post" action="/board/updatepro.do" onsubmit="return isUpWriter()">
 		 	<table>
 		 		<tr>
 		 			<th>タイトル</th>
-			 		<td>
-			 			<input type="hidden" name="email" id="email" value=<sec:authentication property="principal.username" />>
-			 			<input type="text" size = "96px" name="title">
+			 		<td colspan = "3">
+			 			<input type="hidden" name="post_id" id="post_id" value="${view.post_id}">
+			 			<input type="text" name="title" id="title" value="${view.title}">
 			 		</td>
 		 		</tr>
 		 		<tr>
-		 			<th>コンテンツ</th>
-		 			<td><input type="text" size = "96px" style="height : 222px" name="content"></td>
+		 			<td>ディテール</td>
+		 			<td>作成者 : <sec:authentication property="principal.username" /></td>
+		 			<td>作成日時 : <fmt:formatDate var="resultCreated" value="${view.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/>${resultCreated}</td>
+		 			<td>修正日時 : <fmt:formatDate var="resultUpdated" value="${view.updated_at}" pattern="yyyy-MM-dd HH:mm:ss"/>${resultUpdated}</td>
 		 		</tr>
 		 		<tr>
-					<td colspan="2" style ="text-align : center; gap = 80px;">
-						<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
-						<input type = "button" value = "キャンセル" onclick="location.href='/'">
-						<input type = "reset"  value = "リセット">
-						<input type = "submit" value = "セーブ">
+		 			<th>コンテンツ</th>
+		 			<td colspan = "3" style ="height : 222px;">
+		 				<textarea name="content" id="content" rows="8">
+		 					${view.content}
+		 				</textarea>
+		 			</td>
+		 		</tr>
+		 		<tr>
+					<td colspan="4" style ="text-align : center; gap = 80px;">
+						<input type = "button" value = "リスト" onclick="location.href='/'">
+						
+						<sec:authorize access="isAuthenticated()">
+							<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
+							<input type = "hidden" name = "writer" id = "writer" value = "${view.email}">
+							<input type = "submit" value = "モディファイ">
+						</sec:authorize>
 					</td>
 				</tr>
-		 	</table>
-		 </form>
+			</table>
+		</form>
 	</section>
 	
 	<footer>

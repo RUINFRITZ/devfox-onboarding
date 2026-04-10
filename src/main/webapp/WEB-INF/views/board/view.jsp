@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <%@ page session="true" %>
@@ -29,22 +30,38 @@
 	
 	footer { padding : 22px 0; text-align : center; background-color : RGB(255, 109, 45);}
 	
+	table, th, td { border : 1px solid #888; }
+	
+	table { margin : 0 auto; width : 880px; }
+
+	
 </style>
 
 <script>
-	function check() {
-		if(write.title.value.trim() == "") {
-			alert("タイトルを入力してください。");
-			write.title.focus();
+	function isDeWriter() {
+		if(del.writer.value == del.user.value) {
+			if(window.confirm(" * 本当に削除しますか？")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			alert("作成者しかできません。");
 			return false;
 		}
-		if(write.content.value.trim() == "") {
-			alert("コンテンツを入力してください。");
-			write.content.focus();
+	}
+	
+	function isUpWriter() {
+		if(udt.writer.value == udt.user.value) {
+			if(window.confirm(" - 修正しますか？")) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			alert("作成者しかできません。");
 			return false;
 		}
-		
-		return true;
 	}
 </script>
 
@@ -71,36 +88,50 @@
 	</sec:authorize>
 	
 		<a href="/">Home</a>
-		<form class="search_form" method="post" action="/search.do">
-			<input type = text name = search>
-			<input type = "submit" value = "検索">
-		</form>
 	</nav>
 	
 	<section>
-		 <h2>記事作成</h2>
-		 <form name="write" method="post" action="/board/write.do" onsubmit="function check()">
+		 <h2 style="margin-bottom : 22px;">記事詳細</h2>
 		 	<table>
 		 		<tr>
 		 			<th>タイトル</th>
-			 		<td>
-			 			<input type="hidden" name="email" id="title" value=<sec:authentication property="principal.username" />>
-			 			<input type="text" name="title" id="title">
+			 		<td colspan = "4">
+			 			<p>${view.title}</p>
 			 		</td>
 		 		</tr>
 		 		<tr>
-		 			<th>コンテンツ</th>
-		 			<td><input type="text" style="height : 222px" name="title" id="title"></td>
+		 			<th>ディテール</th>
+		 			<td>ビューズ : ${view.views}</td>
+		 			<td>作成者 : ${view.email}</td>
+		 			<td>作成日時 : <fmt:formatDate var="resultCreated" value="${view.created_at}" pattern="yyyy-MM-dd HH:mm:ss"/>${resultCreated}</td>
+		 			<td>修正日時 : <fmt:formatDate var="resultUpdated" value="${view.updated_at}" pattern="yyyy-MM-dd HH:mm:ss"/>${resultUpdated}</td>
 		 		</tr>
 		 		<tr>
-					<td colspan="2" style="text-align : center;">
-						<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
-						<input type = "reset"  value = "リセット">
-						<input type = "submit" value = "ログイン">
+		 			<th>コンテンツ</th>
+		 			<td colspan = "4" style ="height : 222px;">${view.content}</td>
+		 		</tr>
+		 		<tr>
+					<td colspan="5" style ="text-align : center; gap = 80px;">
+						<input type = "button" value = "リスト" onclick="location.href='/'">
+						
+						<sec:authorize access="isAuthenticated()">
+							<form name="del" method="post" action="/board/delete/${view.post_id}" onsubmit="return isDeWriter()">
+								<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
+								<input type = "hidden" name = "writer" value = "${view.email}" >
+								<input type = "hidden" name = "user" value = "<sec:authentication property="principal.username" />" >
+								<input type = "submit" value = "デリート">
+							</form>
+							
+							<form name="udt" method="post" action="/board/update/${view.post_id}" onsubmit="return isUpWriter()">
+								<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
+								<input type = "hidden" name = "writer" value = "${view.email}" >
+								<input type = "hidden" name = "user" value = "<sec:authentication property="principal.username" />" >
+								<input type = "submit" value = "モディファイ">
+							</form>
+						</sec:authorize>
 					</td>
 				</tr>
 		 	</table>
-		 </form>
 	</section>
 	
 	<footer>

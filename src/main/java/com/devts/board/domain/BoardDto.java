@@ -79,6 +79,14 @@ public class BoardDto {
 		this.is_deleted = is_deleted;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public Date getCreated_at() {
 		return created_at;
 	}
@@ -94,14 +102,5 @@ public class BoardDto {
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
 	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	
 }

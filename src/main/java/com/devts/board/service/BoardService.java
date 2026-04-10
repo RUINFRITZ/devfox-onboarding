@@ -1,6 +1,7 @@
 package com.devts.board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,7 +21,14 @@ public class BoardService {
 		return mBoardMapper.postList();
 	}
 	
-	public BoardDto postView(String post_id) {
+	public List<BoardDto> getPostListWithPaging(Map<String, Object> paramMap){
+		int startPostNum = ((Integer)paramMap.get("pageNum") - 1) * (Integer)paramMap.get("pageAmount");
+		paramMap.put("startPostNum", startPostNum);
+		return mBoardMapper.getPostListWithPaging(paramMap);
+	}
+	
+	public BoardDto postView(int post_id) {
+		mBoardMapper.updatePostViews(post_id);
 		return mBoardMapper.postView(post_id);
 	}
 	
@@ -30,13 +38,21 @@ public class BoardService {
 	}
 	
 	// 記事を完全にデータベースで削除しするではなく、id_deletedカラムに現在時間を入れます。
-	public int postDelete(String post_id) {
+	public int postDelete(int post_id) {
 		return mBoardMapper.postDelete(post_id);
 	}
 	
-	// 記事の同じpost_idに修訂しなす。
+	// 記事の同じpost_idに修正しなす。
 	public int postUpdate(BoardDto board) {
 		return mBoardMapper.postUpdate(board);
+	}
+	
+	public int getPostTotalCnt(Map<String, Object> paramMap) {
+		return mBoardMapper.getPostTotalCnt(paramMap);
+	}
+	
+	public int updatePostViews(int post_id) {
+		return mBoardMapper.updatePostViews(post_id);
 	}
 	
 }
