@@ -11,6 +11,7 @@
 		<security:intercept-url pattern="/board/delete" access="hasAuthority('USER')" />
 		<security:intercept-url pattern="/board/update" access="hasAuthority('USER')" />
 		<security:intercept-url pattern="/board/update*" access="hasAuthority('USER')" />
+		<security:intercept-url pattern="/comment/new" access="hasAuthority('USER')" />
 		
 		<security:form-login login-page="/login"
 							 username-parameter="email"

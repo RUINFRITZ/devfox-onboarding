@@ -41,6 +41,13 @@ WHERE post_id = 2 AND is_deleted IS NULL;
 
 SELECT @@time_zone;
 
+INSERT comments (post_id, user_id, content) VALUE (2, 2, 'test');
+INSERT comments (post_id, user_id, content) VALUE (4, 2, 'test2');
 
-        
-        
+SELECT c.comment_id, c.post_id, c.user_id, c.content, c.created_at, u.email as email
+FROM comments as c LEFT JOIN users as u
+ON c.user_id = u.user_id
+WHERE is_deleted IS NULL AND c.post_id = 4
+ORDER BY c.created_at DESC;
+
+UPDATE comments SET content = 'testtest' WHERE comment_id = 2; 

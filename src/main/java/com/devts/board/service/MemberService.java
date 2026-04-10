@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.devts.board.domain.MemberDto;
 import com.devts.board.mapper.MemberMapper;
 
-
 @Service("com.devts.board.service.MemberService")
 public class MemberService {
 	
