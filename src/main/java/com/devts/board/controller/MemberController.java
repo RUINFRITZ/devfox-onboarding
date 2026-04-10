@@ -53,11 +53,13 @@ public class MemberController {
 		return "join";
 	}
 	
-	@GetMapping(value = "/emailcheck")
+	@GetMapping(value = "/emailcheck", produces = "text/plain;charset=UTF-8")
 	@ResponseBody
-	public int MemberEmailCheck(HttpServletRequest req) {
+	public String MemberEmailCheck(HttpServletRequest req) {
 		
-		return mMemberService.memberEmailCheck(req.getParameter("email"));
+		int result = mMemberService.memberEmailCheck(req.getParameter("email"));
+		
+		return String.valueOf(result);
 	}
 	
 	// Spring-Securityを利用して暗号化します。
@@ -94,7 +96,7 @@ public class MemberController {
 			new SecurityContextLogoutHandler().logout(req, res, auth);
 		}
 		
-		return "home";
+		return "redirect:/";
 	}
 	
 }

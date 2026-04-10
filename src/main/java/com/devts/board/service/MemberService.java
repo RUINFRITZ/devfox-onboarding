@@ -21,7 +21,12 @@ public class MemberService {
 	}
 	
 	// メンバーのメールの重複を確認します。
-	public int memberEmailCheck(String mail) {
-		return mMemberMapper.memberEmailCheck(mail);
+	public int memberEmailCheck(String email) {
+		return mMemberMapper.memberEmailCheck(email);
+	}
+	
+	// メールを利用してuser_idを持ってきます。
+	public int memberUserIdGet(String email) {
+		return mMemberMapper.memberUserIdGet(email);
 	}
 }

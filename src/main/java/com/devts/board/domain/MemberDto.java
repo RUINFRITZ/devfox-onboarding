@@ -11,7 +11,7 @@ public class MemberDto {
     private int point; // int,
     private String role; // VARCHAR(16) DEFAULT 'USER',
     private Date created_at; // DATETIME DEFAULT CURRENT_TIMESTAMP,
-    private Date is_active; // DATETIME DEFAULT CURRENT_TIMESTAMP,
+    private int is_active; // DATETIME DEFAULT CURRENT_TIMESTAMP,
     // CONSTRAINT users_pk PRIMARY KEY (user_id)
     
     public MemberDto() {
@@ -54,17 +54,21 @@ public class MemberDto {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public int getIs_active() {
+		return is_active;
+	}
+
+	public void setIs_active(int is_active) {
+		this.is_active = is_active;
+	}
+
 	public Date getCreated_at() {
 		return created_at;
 	}
+
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
-	}
-	public Date getIs_active() {
-		return is_active;
-	}
-	public void setIs_active(Date is_active) {
-		this.is_active = is_active;
 	}
     
 }

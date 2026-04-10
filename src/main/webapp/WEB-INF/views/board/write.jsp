@@ -2,6 +2,7 @@
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <%@ page session="true" %>
 
 <html>
@@ -28,7 +29,30 @@
 	
 	footer { padding : 22px 0; text-align : center; background-color : RGB(255, 109, 45);}
 	
+	table, th, td { border : 1px solid #888; }
+	
+	table { margin : 0 auto; width : 880px; }
+
+	
 </style>
+
+<script>
+	function check() {
+		if(write.title.value.trim() == "") {
+			alert("タイトルを入力してください。");
+			write.title.focus();
+			return false;
+		}
+		if(write.content.value.trim() == "") {
+			alert("コンテンツを入力してください。");
+			write.content.focus();
+			return false;
+		}
+		
+		return true;
+	}
+</script>
+
 </head>
 
 <body>
@@ -55,7 +79,30 @@
 	</nav>
 	
 	<section>
-		 - お気に入り(Bookmarks)、会員退会
+		 <h2 style="margin-bottom : 22px;">記事作成</h2>
+		 <form name="write" method="post" action="/board/write.do" onsubmit="function check()">
+		 	<table>
+		 		<tr>
+		 			<th>タイトル</th>
+			 		<td>
+			 			<input type="hidden" name="email" id="email" value=<sec:authentication property="principal.username" />>
+			 			<input type="text" size = "96px" name="title">
+			 		</td>
+		 		</tr>
+		 		<tr>
+		 			<th>コンテンツ</th>
+		 			<td><input type="text" size = "96px" style="height : 222px" name="content"></td>
+		 		</tr>
+		 		<tr>
+					<td colspan="2" style ="text-align : center; gap = 80px;">
+						<input type = "hidden" name = "${_csrf.parameterName}" value = "${_csrf.token}" >
+						<input type = "button" value = "キャンセル" onclick="location.href='/'">
+						<input type = "reset"  value = "リセット">
+						<input type = "submit" value = "セーブ">
+					</td>
+				</tr>
+		 	</table>
+		 </form>
 	</section>
 	
 	<footer>

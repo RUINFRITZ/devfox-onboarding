@@ -71,10 +71,6 @@
 	</sec:authorize>
 	
 		<a href="/">Home</a>
-		<form class="search_form" method="post" action="/search.do">
-			<input type = text name = search>
-			<input type = "submit" value = "検索">
-		</form>
 	</nav>
 	
 	<section>
