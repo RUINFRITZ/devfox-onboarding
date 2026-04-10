@@ -1,6 +1,6 @@
 学習スケジュール
 
-260410 : Board, Paging, Search, 報告文書作成 / 【週報】【名前】3週目(260406~260410)
+260410 : Board, Paging, Search, 報告文書作成 / 【週報】【朴潤正】3週目(260406~260410)
   - Board : List(Paging), View, Write, Update, Delete, ViewsUP
   - Comment : List, Write, Delete
   - issue : 日本語が"UTF-8"にインコディングされなくてデータベースに保存される状況が発生しました。
