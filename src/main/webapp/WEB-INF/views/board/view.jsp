@@ -43,6 +43,16 @@
 	<sec:authorize access = "isAuthenticated()">
 		loginUser = '<sec:authentication property="principal.username" />';
 	</sec:authorize>
+	
+	function htmlDecode(html) {
+		var txt = document.createElement("textarea");
+		txt.innerHTML = html;
+		return txt.value;
+	}
+	
+	if(loginUser) {
+		loginUser = htmlDecode(loginUser);
+	}
 
 	function isDeWriter() {
 		if(del.writer.value == del.user.value) {
@@ -270,9 +280,7 @@
 		 			var postId = '<c:out value="${view.post_id}"/>';
 		 			var commentUL = $(".chat");
 		 			
-		 			showCommentList();
-		 			
-		 			function showCommentList() {
+		 			window.showCommentList = function() {
 		 				commentService.getList(
 		 					{ post_id : postId },
 		 					function(list) {
@@ -300,19 +308,21 @@
 		 							str += "作成日時 : " + formattedDate + "</small></div>";
 		 							str += "<p id='content_text_" + list[i].comment_id + "' style = 'padding : 10px; margin : 0;'>" + list[i].content + "</p>";
 									
-		 							// if(loginUser.trim().toLowerCase() === list[i].email.trim().toLowerCase()) {
+		 							if(loginUser.trim().toLowerCase() === list[i].email.trim().toLowerCase()) {
 			 							str += "<div><input type = 'button' onclick='commentUpdate(" + list[i].comment_id + ", `" + list[i].content + "`)' value = 'モディファイ' style = 'float : right; width : 100px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'>"
 				 						str += "<input type = 'button' class='commentDeleteBtn' data-delete='" + list[i].comment_id + "' value='デリート' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'><br><br></div>";
-		 							// }
+		 							}
 		 							
 		 							str += "</li><br>";
 		 						}
 		 						
 		 						commentUL.html(str);
 		 						$("input:button.commentDeleteBtn").on('click', commentDeleteBtn)
-		 						
-		 				})
-		 			}
+		 					}
+		 				)
+		 			};
+		 			
+		 			window.showCommentList();
 		 			
 		 			$('#registCommentBtn').click(function() {
 		 				var registCommentWriter = document.getElementById('comment_writer').value.trim();
@@ -342,57 +352,61 @@
 		 			function commentDeleteBtn() {
 		 				var commentId = $(this).attr("data-delete");
 		 				
-		 				commentService.remove(
-		 					commentId,
-		 					function(result) {
-								if(result === "success") {
-									alert(" - 削除成功");
-									showCommentList();
-								}
-		 					}, function(err) {
-		 						alert(" * Error");
-		 					}
-		 				);
-		 			}
-		 			
-		 			function commentUpdate(comment_id, content) {
-		 				let cmt = "";
-		 				
-		 				cmt += "<li style='border : 1px solid #ccc; border-radius : 4px; margin-bottom : 10px; list-style : none;'>";
-		 				cmt += "<small style='float : right;'>モディファイモード</small></div>";
-		 				cmt += "<input type='text' id='content_" + comment_id + "' style = 'width : 80%; padding : 10px; margin : 0;' value = '"+ content + "'>";
-
-		 				cmt += "<div><input type = 'button' class='commentUpdateBtn' onclick='commentUpdatePro(" + comment_id + ")' value='セーブ' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'>";
-		 				cmt += "<input type = 'button' onclick='showCommentList()' value = 'キャンセル' float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'<br><br></div>"
-							
-		 				cmt += "</li><br>";
-		 				
-		 				$("#comment_item_" + comment_id).html(cmt);
-		 			}
-		 			
-		 			// JQueryの「onclick」属性を直接伝達
-		 			function commentUpdatePro(comment_id) {
-		 				let updateContent = $('#content_' + comment_id).val();
-		 				let comment = {
-		 						comment_id: comment_id,
-		 						content: updateContent
+		 				if(window.confirm(" * 本当に削除しますか？")) {
+		 					commentService.remove(
+				 					commentId,
+				 					function(result) {
+										if(result === "success") {
+											alert(" - 削除成功");
+											window.showCommentList();
+										}
+				 					}, function(err) {
+				 						alert(" * Error");
+				 					}
+				 				);
+		 					return true;
+		 				} else {
+		 					return false;
 		 				}
-						
-		 				commentService.update(
-		 					comment,
-		 					function(result) {
-								if(result === "success") {
-									alert(" - 修正成功");
-									showCommentList();
-								}		 						
-		 					}, function(err) {
-		 						alert(" * Error");
-		 						console.error(err);
-		 					}
-			 			);
 		 			}
-		 			
 		 		});
+		 		
+		 		function commentUpdate(comment_id, content) {
+	 				let cmt = "";
+	 				
+	 				cmt += "<li style='margin-bottom : 10px; list-style : none;'>";
+	 				cmt += "<small style='float : right; padding : 8px;'>モディファイモード</small></div>";
+	 				cmt += "<input type='text' id='content_" + comment_id + "' style = 'height : 80px; width : 80%; padding : 8px; margin : 22px;' value = '"+ content + "'>";
+
+	 				cmt += "<div><input type = 'button' class='commentUpdateBtn' onclick='commentUpdatePro(" + comment_id + ")' value='セーブ' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'>";
+	 				cmt += "<input type = 'button' onclick='showCommentList()' value = 'キャンセル' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'<br><br></div>";
+						
+	 				cmt += "</li><br>";
+	 				
+	 				$("#comment_item_" + comment_id).html(cmt);
+	 			}
+	 			
+	 			// JQueryの「onclick」属性を直接伝達
+	 			function commentUpdatePro(comment_id) {
+	 				let updateContent = $('#content_' + comment_id).val();
+	 				let comment = {
+	 						comment_id: comment_id,
+	 						content: updateContent
+	 				}
+					
+	 				commentService.update(
+	 					comment,
+	 					function(result) {
+							if(result === "success") {
+								alert(" - 修正成功");
+								window.showCommentList();
+							}		 						
+	 					}, function(err) {
+	 						alert(" * Error");
+	 						console.error(err);
+	 					}
+		 			);
+	 			}
 		 	
 		 	</script>
 		 	
