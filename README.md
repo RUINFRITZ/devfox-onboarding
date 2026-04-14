@@ -1,4 +1,5 @@
-# DEVFOX Onboarding & Backend Knowledge Base : 「IP : 3.39.233.74:8080 / ON 04.14.」 
+# DEVFOX Onboarding & Backend Knowledge Base
+*「IP : 3.39.233.74:8080 / ON 04.14.」 
 
 本リポジトリは、DEVFOX入社に向けた「事前オンボーディング課題」の提出、および入社後も実務適応とバックエンド技術の継続的なスキルアップを図るためのリポジトリです。
 
