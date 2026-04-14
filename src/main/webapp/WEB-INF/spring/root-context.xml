@@ -23,7 +23,7 @@
             value="jdbc:mysql://127.0.0.1:3306/devfox?useSSL=false&amp;serverTimezone=Asia/Seoul">
         </property>
         <property name="username" value="DEVFOX"></property>
-        <property name="password" value="1234"></property>
+        <property name="password" value="Devfox2026!@"></property>
     </bean>        
  
     <!-- mybatis SqlSessionFactoryBean -->
