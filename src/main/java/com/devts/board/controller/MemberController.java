@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.devts.board.domain.MemberDto;
 import com.devts.board.service.MemberService;
@@ -67,7 +68,7 @@ public class MemberController {
 	private PasswordEncoder passwordEncoder;
 	
 	@RequestMapping(value = "/join.do")
-	private String MemberInsertPro(HttpServletRequest req) {
+	private String MemberInsertPro(HttpServletRequest req, RedirectAttributes rttr) {
 		
 		MemberDto dto = new MemberDto();
 		
@@ -77,9 +78,17 @@ public class MemberController {
 		String enpass = passwordEncoder.encode(req.getParameter("password"));
 		dto.setPassword(enpass);
 		
-		mMemberService.memberInsertService(dto);
+		try {
+			mMemberService.memberInsertService(dto);
+			rttr.addAttribute("msg", "JOIN_SUCCESS");
+			
+			return "redirect:/login";
+		} catch (Exception e) {
+			rttr.addAttribute("msg", "ERROR_DUPLICATE");
+			
+			return "redirect:/join";
+		}
 		
-		return "redirect:/login";
 	}
 	
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)

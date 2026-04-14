@@ -37,7 +37,7 @@
 
 <script>
 	function check() {
-		if(join.username.value.trim() == "") {
+		if(join.email.value.trim() == "") {
 			alert(" * メールを入力してください。");
 			join.username.focus();
 			return false;
@@ -66,11 +66,22 @@
 		if(document.getElementById('is_email_exist').value === 'n') {
 			alert(" * メールチェッくをおねがいします。");
 			return false;
-		} else {
-			alert(" - ご登録を歓迎いたします。");
-			return true;
 		}
+		
+		alert(" - ご登録を歓迎いたします。");
+		return true;
 	}
+	
+	$(document).ready(function() {
+		var msg = "${msg}";
+		
+		if(msg === "ERROR_DUPLICATE") {
+			alert(" * すでに存在する会員です。");
+			$("#email").focus();
+		} else if (msg === "JOIN_SUCCESS") {
+			alert(" - ありがとうございます。ログインしてください。");
+		}
+	})
 </script>
 
 </head>
@@ -139,6 +150,7 @@
 	</footer>
 
 	<script>
+	
 		$(function() {
 			$('#emcheck').on('click', function() {
 				const emailVal = $('#email').val().trim();
