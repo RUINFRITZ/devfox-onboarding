@@ -39,6 +39,21 @@
 </style>
 
 <script>
+	var loginUser = "";
+	<sec:authorize access = "isAuthenticated()">
+		loginUser = '<sec:authentication property="principal.username" />';
+	</sec:authorize>
+	
+	function htmlDecode(html) {
+		var txt = document.createElement("textarea");
+		txt.innerHTML = html;
+		return txt.value;
+	}
+	
+	if(loginUser) {
+		loginUser = htmlDecode(loginUser);
+	}
+
 	function isDeWriter() {
 		if(del.writer.value == del.user.value) {
 			if(window.confirm(" * 本当に削除しますか？")) {
@@ -265,20 +280,21 @@
 		 			var postId = '<c:out value="${view.post_id}"/>';
 		 			var commentUL = $(".chat");
 		 			
-		 			showCommentList();
-		 			
-		 			function showCommentList() {
+		 			window.showCommentList = function() {
 		 				commentService.getList(
 		 					{ post_id : postId },
 		 					function(list) {
 		 						var str = "";
 		 						
+								console.log("Current Login User : ", loginUser);
+		 						
 		 						if(list == null || list.length == 0){
-		 							commentUL.html("border-color : ");
+		 							commentUL.html("<li style='padding : 10px; text-align : center;'>登録されたコメントがありません。</li>");
 		 							return;
 		 						}
 		 						
 		 						for(var i=0, len=list.length || 0; i<len; i++) {
+		 							console.log("Comment Writer [" + i + "] : ", list[i].email);
 		 							var dateObj = new Date(list[i].created_at);
 		 							var formattedDate = dateObj.getFullYear() + "-" +
 		 								("0" + (dateObj.getMonth() + 1)).slice(-2) + " " +
@@ -287,21 +303,26 @@
 		 								("0" + dateObj.getMinutes()).slice(-2) + ":" +
 		 								("0" + dateObj.getSeconds()).slice(-2);
 		 							
-		 							str += "<li style='border : 1px solid #ccc; border-radius : 4px; margin-bottom : 10px;'>";
+		 							str += "<li id='comment_item_" + list[i].comment_id + "' style='border : 1px solid #ccc; border-radius : 4px; margin-bottom : 10px;'>";
 		 							str += "<div style = 'padding : 10px;'>作成者 : <strong> " + list[i].email + "</strong><small style='float : right;'>";
 		 							str += "作成日時 : " + formattedDate + "</small></div>";
-		 							str += "<p style = 'padding : 10px; margin : 0;'>" + list[i].content + "</p>";
-
-			 						str += "<div><input type = 'button' class='commentDeleteBtn' data-delete='" + list[i].comment_id + "' value='デリート' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'><br><br></div>";
+		 							str += "<p id='content_text_" + list[i].comment_id + "' style = 'padding : 10px; margin : 0;'>" + list[i].content + "</p>";
+									
+		 							if(loginUser.trim().toLowerCase() === list[i].email.trim().toLowerCase()) {
+			 							str += "<div><input type = 'button' onclick='commentUpdate(" + list[i].comment_id + ", `" + list[i].content + "`)' value = 'モディファイ' style = 'float : right; width : 100px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'>"
+				 						str += "<input type = 'button' class='commentDeleteBtn' data-delete='" + list[i].comment_id + "' value='デリート' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'><br><br></div>";
+		 							}
 		 							
 		 							str += "</li><br>";
 		 						}
 		 						
 		 						commentUL.html(str);
 		 						$("input:button.commentDeleteBtn").on('click', commentDeleteBtn)
-		 						
-		 				})
-		 			}
+		 					}
+		 				)
+		 			};
+		 			
+		 			window.showCommentList();
 		 			
 		 			$('#registCommentBtn').click(function() {
 		 				var registCommentWriter = document.getElementById('comment_writer').value.trim();
@@ -327,23 +348,65 @@
 		 				}
 		 			})
 		 			
+		 			// JQueryの付与された属性の伝達
 		 			function commentDeleteBtn() {
 		 				var commentId = $(this).attr("data-delete");
 		 				
-		 				commentService.remove(
-		 					commentId,
-		 					function(result) {
-								if(result === "success") {
-									alert(" - 削除成功");
-									showCommentList();
-								}		 						
-		 					}, function(err) {
-		 						alert(" * Error");
-		 					}
-		 				);
+		 				if(window.confirm(" * 本当に削除しますか？")) {
+		 					commentService.remove(
+				 					commentId,
+				 					function(result) {
+										if(result === "success") {
+											alert(" - 削除成功");
+											window.showCommentList();
+										}
+				 					}, function(err) {
+				 						alert(" * Error");
+				 					}
+				 				);
+		 					return true;
+		 				} else {
+		 					return false;
+		 				}
 		 			}
-		 			
 		 		});
+		 		
+		 		function commentUpdate(comment_id, content) {
+	 				let cmt = "";
+	 				
+	 				cmt += "<li style='margin-bottom : 10px; list-style : none;'>";
+	 				cmt += "<small style='float : right; padding : 8px;'>モディファイモード</small></div>";
+	 				cmt += "<input type='text' id='content_" + comment_id + "' style = 'height : 80px; width : 80%; padding : 8px; margin : 22px;' value = '"+ content + "'>";
+
+	 				cmt += "<div><input type = 'button' class='commentUpdateBtn' onclick='commentUpdatePro(" + comment_id + ")' value='セーブ' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'>";
+	 				cmt += "<input type = 'button' onclick='showCommentList()' value = 'キャンセル' style = 'float : right; width : 80px; height : 32px; border-radius : 22px; margin-right : 16px; cursor : pointer;'<br><br></div>";
+						
+	 				cmt += "</li><br>";
+	 				
+	 				$("#comment_item_" + comment_id).html(cmt);
+	 			}
+	 			
+	 			// JQueryの「onclick」属性を直接伝達
+	 			function commentUpdatePro(comment_id) {
+	 				let updateContent = $('#content_' + comment_id).val();
+	 				let comment = {
+	 						comment_id: comment_id,
+	 						content: updateContent
+	 				}
+					
+	 				commentService.update(
+	 					comment,
+	 					function(result) {
+							if(result === "success") {
+								alert(" - 修正成功");
+								window.showCommentList();
+							}		 						
+	 					}, function(err) {
+	 						alert(" * Error");
+	 						console.error(err);
+	 					}
+		 			);
+	 			}
 		 	
 		 	</script>
 		 	
