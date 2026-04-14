@@ -3,6 +3,15 @@
 【週報】【朴潤正】4週目(260413~260414)
   - バャックアンドで実装だけしていたコメントの修正機能をビューに繋ぎました。
   - 開発した掲示板をAWSにデプロイしました。 // 「IP : 3.39.233.74:8080 / ON 04.14.」 
+    - sudo systemctl restart tomcat.service
+    - sudo systemctl status tomcat.service
+    [Physical Clean]
+    - sudo systemctl stop tomcat.service
+    - sudo rm -rf /home/tomcat/apache-tomcat-9.0.117/work/*
+    - sudo rm -rf /home/tomcat/apache-tomcat-9.0.117/temp/*
+    - sudo systemctl start tomcat.service
+    [リアルタイムーログ追跡]
+    - tail -f /home/tomcat/apache-tomcat-9.0.117/logs/catalina.out
   [ 全体的な実装機能詳細 ]
     1. 会員管理 : CRUD
       1) C「」
