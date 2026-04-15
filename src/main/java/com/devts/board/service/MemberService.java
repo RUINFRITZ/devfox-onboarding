@@ -28,4 +28,14 @@ public class MemberService {
 	public int memberUserIdGet(String email) {
 		return mMemberMapper.memberUserIdGet(email);
 	}
+	
+//	// ログインのためにメールとパスワードを利用して照会します。
+//	public MemberDto memberLogin(MemberDto member) {
+//		if(mMemberMapper.memberEmailCheck(member.getEmail()) > 0) {
+//			return mMemberMapper.memberLogin(member);
+//		} else {
+//			return null;
+//		}
+//	}
+	
 }

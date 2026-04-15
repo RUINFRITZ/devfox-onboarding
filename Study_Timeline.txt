@@ -14,8 +14,8 @@
     - tail -f /home/tomcat/apache-tomcat-9.0.117/logs/catalina.out
   [ 全体的な実装機能詳細 ]
     1. 会員管理 : CRUD
-      1) C「」
-      2) R「」
+      1) C「memberInsert」 : ログインアイディは「メール」を使います。すでに登録されているメールを照会して検証した後、会員登録を進行いたします。
+      2) R「Spring security:authentication-manage」 : 「username」と「authorities」属性にメールと権限をデータベースから読んで来てセッションに保存します。
       3) U「」
       4) D「」
     
@@ -27,7 +27,7 @@
       5) R「検索」
       6) R「ページング」
 
-    3. コメント : CRUD
+    3. コメント : CRUD, AJAX
       1) C「」
       2) R「」
       3) U「」JQueryの「onclick」属性を直接伝達

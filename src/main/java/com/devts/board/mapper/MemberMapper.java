@@ -6,7 +6,7 @@ import com.devts.board.domain.MemberDto;
 
 @Repository("com.devts.board.mapper.MemberMapper")
 public interface MemberMapper {
-
+	
 	// 会員を登録しなす。
 	public int memberInsert(MemberDto dto);
 	
@@ -15,4 +15,7 @@ public interface MemberMapper {
 	
 	// メールを利用してuser_idを持ってきます。
 	public int memberUserIdGet(String email);
+	
+//	// ログインのためにメールとパスワードを利用して照会します。
+//	public MemberDto memberLogin(MemberDto dto);
 }

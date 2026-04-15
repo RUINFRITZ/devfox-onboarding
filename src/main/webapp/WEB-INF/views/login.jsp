@@ -8,6 +8,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>コミュニティーシステム</title>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <style>
 	* { margin : 0; padding : 0; }
@@ -47,6 +48,16 @@
 		
 		return true;
 	}
+	
+	$(document).ready(function() {
+		const urlParam = new URLSearchParams(window.location.search);
+		
+		if(urlParam.has('error')) {
+			alert(" * 入力された情報が異なります。");
+			$("#email").focus();
+		}
+
+	})
 </script>
 </head>
 

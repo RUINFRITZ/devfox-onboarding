@@ -3,6 +3,7 @@ package com.devts.board.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,11 +43,32 @@ public class MemberController {
 		return "login";
 	}
 	
-	@PostMapping("/login.do") // value属性だけある場合は省略できます。
-	public String loginpro() {
-		
-		return "home";
-	}
+	// Spring-Securityでログイン処理を委任
+//	@PostMapping("/login.do") // value属性だけある場合は省略できます。
+//	public String loginpro(HttpServletRequest req, RedirectAttributes rttr, Model model) {
+		/*try {
+			MemberDto member = new MemberDto();
+			
+			member.setEmail(req.getParameter("email"));
+			String enpass = passwordEncoder.encode(req.getParameter("password"));
+			member.setPassword(enpass);
+			
+			mMemberService.memberLogin(member);
+			
+			rttr.addAttribute("msg", "LOGIN_SUCCESS");
+			member.setPassword("security");
+
+			HttpSession session = req.getSession();
+			session.setAttribute("member", member);
+			return "redirect:/";
+		} catch (Exception e) {
+			rttr.addAttribute("msg", "ERROR_NOTFOUND");
+			
+			return "redirect:/login";
+		}
+		*/
+//		return "home";
+//	}
 	
 	@RequestMapping(value = "/join", method = RequestMethod.GET)
 	public String join(Model model) {
