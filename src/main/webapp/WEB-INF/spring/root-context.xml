@@ -20,7 +20,7 @@
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
         <property name="url"
-            value="jdbc:mysql://127.0.0.1:3306/devfox?useSSL=false&amp;serverTimezone=Asia/Seoul">
+            value="jdbc:mysql://127.0.0.1:3306/devfox?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Asia/Seoul">
         </property>
         <property name="username" value="DEVFOX"></property>
         <property name="password" value="Devfox2026!@"></property>
