@@ -1,5 +1,7 @@
 INSERT INTO users (email, password, nickname, point) VALUES ('test@devfox.com', 1234, 'foxfox', 0);
 
+SELECT * FROM users WHERE email = 'foxfox@fox.com' AND password = '$2a$10$e3vIs1VjtvfNMHndyzSC/eIExH6UptEHwcOFNLZJpwU6MZF4UnlES' AND is_active = 1;
+
 SELECT * FROM users;
 SELECT email FROM users where email = "foxfox@fox.com";
 
@@ -51,3 +53,5 @@ WHERE is_deleted IS NULL AND c.post_id = 4
 ORDER BY c.created_at DESC;
 
 UPDATE comments SET content = 'testtest' WHERE comment_id = 2; 
+
+SELECT * FROM posts LIMIT 4 OFFSET 0;

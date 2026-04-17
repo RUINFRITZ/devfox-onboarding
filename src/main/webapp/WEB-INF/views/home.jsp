@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
-
+0
 <%@ page session="true" %>
 
 <html>
@@ -96,7 +96,7 @@
 		 	</c:if>
 		 	
 		 	<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}" step="1">
-		 		<span style = "color : GREEN;"><c:if test="${num == pageMaker.pageNum}">${num}</c:if></span>
+		 		<span style = "color : RGB(255, 109, 45);"><c:if test="${num == pageMaker.pageNum}">${num}</c:if></span>
 		 		<c:if test="${num != pageMaker.pageNum}">
 		 			<a href="/?&searchType=${pageMaker.searchType}&searchWord=${pageMaker.searchWord}&pageNum=${num}&pageAmount=${pageMaker.pageAmount}">${num}</a>
 		 		</c:if>

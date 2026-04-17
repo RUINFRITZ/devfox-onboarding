@@ -1,6 +1,7 @@
 学習スケジュール
 
-【週報】【朴潤正】4週目(260413~260414)
+【週報】【朴潤正】4週目(260413~260417)
+  - レポジトリの要求仕様書の期限(26.4.9.木)より1日遅く開発完了いたしました。副社長様からおっしゃったアドバイスを反映して全体の学習計画書を修正するのにかかった時間が理由でした。
   - バャックアンドで実装だけしていたコメントの修正機能をビューに繋ぎました。
   - 開発した掲示板をAWSにデプロイしました。 // 「IP : 3.39.233.74:8080 / ON 04.14.」 
     - sudo systemctl restart tomcat.service
@@ -13,25 +14,23 @@
     [リアルタイムーログ追跡]
     - tail -f /home/tomcat/apache-tomcat-9.0.117/logs/catalina.out
   [ 全体的な実装機能詳細 ]
-    1. 会員管理 : CRUD
+    1. 会員管理
       1) C「memberInsert」 : ログインアイディは「メール」を使います。すでに登録されているメールを照会して検証した後、会員登録を進行いたします。
       2) R「Spring security:authentication-manage」 : 「username」と「authorities」属性にメールと権限をデータベースから読んで来てセッションに保存します。
-      3) U「」
-      4) D「」
     
     2. 掲示板 : CRUD、検索、ページング
-      1) C「」
-      2) R「」
-      3) U「」　
-      4) D「」
-      5) R「検索」
-      6) R「ページング」
+      1) C「postWrite」 : 作成して置いたDDLに合って生成するDTOに「user_id」,「title」,「content」を入力してリクエストすると、作成時間である「created_at」をデータベースの現在時間を保存します。
+      2) R「getPostListWithPaging」 : 削除されていなくて検索条件に合ったこと全体と、FKである「user_id」を利用して「users」テーブルにジョインを通じて「email」というユーザーアイディを取得します。その後に「updatePostViews」を呼び出して閲覧数を１増やします。
+        2-1) R「検索」 : 検索条件と検索内容をMAPに入れてデータベースにサーブクエリとしてリクエストします。
+        2-2) R「ページング」 : ビューから送られたページング情報をMAPにいれて伝達します。検索条件と検索内容に合う全体の数量をデータベースから持ってきてクエリ「LIMIT」で使用します。この中から「OFFSET」という順番から出力します。
+      3) U「postUpdate」 : 「title」と「content」を伝達されて「post_id」で見つけてアップデートした後、「update_at」と言われる修正時間を更新します。
+      4) D「postDelete」 : 記事の「post_id」に該当するカラムの「is_deleted」項目を現在時間に更新してソフトディーリトします。
 
     3. コメント : CRUD, AJAX
-      1) C「」
-      2) R「」
-      3) U「」JQueryの「onclick」属性を直接伝達
-      4) D「」JQueryの付与された属性の伝達
+      1) C「commentInsert」 : 記事の「post_id」とコメント作成者の「user_id」を利用してデータベースにコメントのコンテンツをデータベースに挿入します。
+      2) R「commentList」 : 削除されていなくこと全体と、FKである「user_id」を利用して「users」テーブルにジョインを通じて「email」というユーザーアイディを取得します。
+      3) U「commentUpdate」 : JQueryの「onclick」属性を直接伝達
+      4) D「commentDelete」 : JQueryの付与された属性の伝達
 
 260410 : Board, Paging, Search, 報告文書作成 / 【週報】【朴潤正】3週目(260406~260410)
   - Board : List(Paging), View, Write, Update, Delete, ViewsUP

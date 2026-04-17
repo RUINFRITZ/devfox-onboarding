@@ -28,6 +28,15 @@
 		LIMIT #{pageAmount} OFFSET #{startPostNum}
 	</select>
 	
+	<select id="getPostTotalCnt" parameterType="java.util.HashMap" resultType="int">
+		SELECT COUNT(*) FROM posts
+		WHERE
+			is_deleted IS NULL
+			<if test="searchType == 'title'.toString()">AND title LIKE CONCAT('%',#{serachWord},'%')</if>
+			<if test="searchType == 'content'.toString()">AND content LIKE CONCAT('%',#{serachWord},'%')</if>
+			<if test="searchType == ''.toString()">AND 1 = 1</if>
+	</select>
+	
 	<select id="postView" parameterType="int" resultType="BoardDto">
 		SELECT post_id, p.user_id as user_id, title, content, views, likes, updated_at, p.created_at as created_at, u.email as email
 		FROM posts as p LEFT JOIN users as u 
@@ -51,15 +60,6 @@
 			updated_at = now()
 		WHERE post_id = #{post_id}
 	</update>
-
-	<select id="getPostTotalCnt" parameterType="java.util.HashMap" resultType="int">
-		SELECT COUNT(*) FROM posts
-		WHERE
-			is_deleted IS NULL
-			<if test="searchType == 'title'.toString()">AND title LIKE CONCAT('%',#{serachWord},'%')</if>
-			<if test="searchType == 'content'.toString()">AND content LIKE CONCAT('%',#{serachWord},'%')</if>
-			<if test="searchType == ''.toString()">AND 1 = 1</if>
-	</select>
 
 	<update id="updatePostViews" parameterType="int">
 		UPDATE posts SET views = views + 1 WHERE post_id = #{post_id}

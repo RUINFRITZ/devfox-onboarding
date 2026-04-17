@@ -40,9 +40,9 @@ public class HomeController {
 		map.put("searchWord", searchWord);
 		
 		List<BoardDto> postList = mBoardService.getPostListWithPaging(map);
-		int total = mBoardService.getPostTotalCnt(map);
 		model.addAttribute("list", postList);
 		
+		int total = mBoardService.getPostTotalCnt(map);
 		PagingDto paging = new PagingDto(Integer.parseInt(pageNum), Integer.parseInt(pageAmount), searchType, searchWord, total);
 		model.addAttribute("pageMaker", paging);
 		
